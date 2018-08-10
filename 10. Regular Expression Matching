@@ -1,0 +1,65 @@
+/*
+static const auto x = [](){
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    return NULL;
+}();
+ 
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        //如果p为空，那就看s是否为空，s为空就返回true，不为空就返回false
+         if(p.empty()) return s.empty();
+        //看p的第二个字符是什么，如果是*那么就看p的第一个字符要不要，要的话那就要求s不为空并且p和s的第一个字符匹配并且s从第二个开始的后面的串要和p匹配
+        //不要的话，就把p的第一个字符舍去，看p从第三个字符开始和s匹不匹配
+         if(p[1] == '*')
+             return isMatch(s, p.substr(2)) || !s.empty() && (p[0] == s[0] || p[0] == '.') && isMatch(s.substr(1), p);
+         else//p第二个字符不是*那就要求p和s的首字符得匹配并且s不为空并且s和p以后的子串要匹配
+             return !s.empty() && (p[0] == s[0] || p[0] == '.') && isMatch(s.substr(1), p.substr(1));
+ 
+    }
+};
+
+*/
+static const auto x = [](){
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    return NULL;
+}();
+ 
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int n = s.length(), m = p.length();
+        //dp[i][j]表示s[0...i]是否匹配p[0...j]
+        vector<vector<bool>> dp(n + 1, vector<bool>(m + 1, false));
+        dp[0][0] = true;//空匹配空返回true
+        dp[0][1] = false;//空匹配一个字符绝对是false
+        for(int i = 1; i <= n; ++i)//i个字符匹配空也是false
+        {
+            dp[i][0] = false;
+        }
+        for(int j = 2; j <= m; ++j)//看p的第二个字符是什么，如果是‘*’，那么dp[0][j]的真假值和dp[0][j-2]相同
+        {
+            dp[0][j] = dp[0][j-2] && p[j-1] == '*';
+        }
+ 
+        for(int j = 1; j <= m; ++j)//从p的长度来迭代，当p的长度为j时
+        {
+            for(int i = 1; i <= n; ++i)//对于为i长度的s来说
+            {
+                if(p[j-1] == '*')//如果p当前字符的前一个字符为‘*’
+                {
+                    //s:abc p:abc* 两种情况 s和p（去掉末尾的c*）匹配或者直接和p匹配
+                    dp[i][j] = dp[i][j-2]  || dp[i-1][j] && (s[i-1] == p[j-2] || p[j-2] == '.');
+                }
+                else//s：abc p: ab口 必须得要c == 口
+                {
+                    dp[i][j] = dp[i-1][j-1] && (p[j-1] == s[i-1] || p[j-1] == '.');
+                }
+            }
+        }
+        return dp[n][m];
+ 
+    }
+};
