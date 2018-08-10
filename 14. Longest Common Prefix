@@ -1,0 +1,39 @@
+static const auto x = [](){
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    return NULL;
+}();
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        string ans = "";
+        int n = 0;
+        bool goOn = true;
+        if(strs.size() == 0)
+            return ans;
+        while(goOn)
+        {
+            if(strs[0].length() == 0)
+            {
+                break;
+            }
+            if(strs[0].length() < n)
+            {
+                goOn=false;
+                break;
+            }
+            for(int i = 1; i < strs.size(); ++i)
+            {
+                if(strs[0].length() < n || strs[i][n] != strs[0][n])
+                {
+                    goOn = false;break;
+                }
+                    
+            }
+            if(goOn)
+            ans+=strs[0][n++];
+        }
+        return ans;
+               
+    }
+};
