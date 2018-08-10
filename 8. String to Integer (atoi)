@@ -1,0 +1,69 @@
+ 
+static const auto ____ = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    return nullptr;
+}();
+ 
+class Solution {
+public:
+    int myAtoi(string str) {
+        
+        string ss = "";//存储数字
+        //sign判断正负
+        int sign = 1;
+        //ans存储答案
+        long long ans = 0;
+        //i为下标
+        int i = 0;
+        //找到第一个非空字符
+        while(str[i] == ' ')
+        {
+            i++;
+        }
+        //第一个非空字符合法
+        if(str[i] == '+' || str[i] == '-' || (str[i] - 48 >= 0 && str[i] - 48 <=9 ))
+       {    //第一个字符为-和+
+           if(str[i] == '-')
+           {
+               sign = -1;
+               i++;
+           }
+           else if(str[i] == '+')
+           {
+               i++;
+           }
+            //找到后面的连续数字，发现不是就break
+            if((str[i] - 48 >= 0 && str[i] - 48 <= 9 ))
+            {
+                 for(; i < str.length(); ++i)
+                    {
+                        if((str[i] - 48 < 0 || str[i] - 48 > 9 ))
+                            break;
+                        ss += str[i];
+                    }
+            }
+           
+       }
+        //无答案返回0
+        if(ss == "")
+            return 0;
+        //算答案，一开始从后面算，发现有错误，还是得从前面算起
+        for(int j = 0; j < ss.length(); ++j)
+        {
+            long long temp = ans * 10 + ss[j] - 48;
+            if(temp > 2147483647)
+            {
+ 
+                if(sign == -1)
+                    return -2147483648;
+                return 2147483647;
+            }
+ 
+ 
+            ans = temp;
+        }
+        return ans * sign;
+    }
+    
+};
