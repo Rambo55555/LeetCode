@@ -1,0 +1,79 @@
+static int x = []() {
+     std::ios::sync_with_stdio(false);
+     cin.tie(NULL);
+     return 0;
+}();
+class Solution {
+public:
+    string longestPalindrome(string s) {
+       int len = s.length();
+    string t="$#";
+    int p[2*len+2];
+    
+    for(int i = 1; i <= len; ++i){//通过在每个字符的左右插入‘#’将字符串变成奇数长度的字符串，$的加入防止边界情况的判断
+        p[i-1] = 0;//初始化p
+        t+=s[i-1];
+        t+='#';
+    }
+    
+    int id = 0, maxLen = 0,index;//maxLen为回文串的半径长度，id为已知右边界最大的回文串的中间，index记录最长回文串的中间
+    for(int i = 2; i <  2 * len + 1; ++i){//从t的第二个字符开始，即s的第一个字符，一直到t的末尾
+        p[i] = (id + p[id])>i?min(p[id]+id-i,p[2 * id - i]):1;//id+p[id]为最长回文串的末尾，如果i在里面，那么p[i]的值为两种情况的最小值，否则为1
+        while(t[i-p[i]] == t[i+p[i]])++p[i];//如果刚好在边缘，那么就一直判断，不断更新p[i]
+ 
+        if((i+p[i]) > (p[id]+id)){//更新id
+            id = i;
+        }
+        if(maxLen < p[i]){//更新
+            maxLen = p[i];
+            index = i;
+        }
+ 
+    }
+    return s.substr((index - maxLen)/2, maxLen-1);
+    }
+    
+};
+
+static int x = []() {
+     std::ios::sync_with_stdio(false);
+     cin.tie(NULL);
+     return 0;
+}();
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int maxLength = 0;//最大长度
+        int len = s.length();
+        int count = 0;//当前长度
+        int index = 0;//最大长度的开始位置
+        //i为中间下标，j为增量
+        for(int i = 0; i < len; ++i){
+            //为偶数长度的情况
+            count = 0;
+            for(int j =  1; j < len; ++j){
+                if(i - j < -1 || i + j >= len || s[i-j+1] != s[i+j])
+                    break;
+                count+=2;
+            }
+            if(count > maxLength){
+                maxLength = count;
+                index = i - maxLength/2 + 1;
+            }
+            //长度为奇数
+            count = 1;
+            for(int j =  1; j < len; ++j){
+                if(i - j < 0 || i + j >= len || s[i-j] != s[i+j])
+                    break;
+                count+=2;
+            }
+            if(count > maxLength){
+                maxLength = count;
+                index = i - maxLength/2;
+            }
+        }
+        return s.substr(index,maxLength);
+    }
+    
+};
+
