@@ -1,0 +1,35 @@
+static const auto x =[](){
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    return NULL;
+}();
+class Solution {
+public:
+    //和三数之和有点像，不过是求最接近的，就没必要记录下标了，也没必要剪枝了
+    int threeSumClosest(vector<int>& nums, int target) {
+        int n = nums.size();
+        int sum = INT_MAX;//记录三数之和与target的最小绝对值
+        int ans = 0;
+        sort(nums.begin(),nums.end());
+        for(int k = 0; k < n; ++k)
+        {
+            
+            int i = k + 1, j = n - 1;
+            while(i < j)
+            {
+                
+                int temp = nums[k] + nums[i] + nums[j];
+                if(abs(temp - target) < sum)//如果比最小绝对值小就更新
+                {
+                    sum = abs(temp - target);
+                    ans = temp;
+                }
+                
+                if(temp - target < 0)++i;//不够大，变大
+                else if(temp - target > 0)--j;//太大了，变小
+                else return ans;
+            }
+        }
+        return ans;
+    }
+};
