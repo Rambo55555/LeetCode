@@ -1,0 +1,30 @@
+ 
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(),nums.end());//先排序
+        vector<vector<int>> ans;
+        
+        for(int k = 0; k < n; ++k)
+        {
+            int i = k + 1, j = n - 1;
+            int temp = 0 - nums[k];
+            if(k > 0 && nums[k] > 0) break;//不可能再找到等于0的了
+            if(k > 0 && nums[k] == nums[k-1])continue;//跳过相等的
+            while(i<j)
+            {
+                if(nums[i]+nums[j] == temp)
+                {
+                    ans.push_back({nums[i],nums[k],nums[j]});
+                    while(i < j && nums[i] == nums[i+1])++i;//跳过左边相同的数
+                    while(i < j && nums[j] == nums[j-1])--j;//跳过右边相同的数
+                    ++i;--j;//更新左右下标
+                }
+                else if(nums[i]+nums[j] < temp) ++i;
+                else --j;
+            }
+        }
+        return ans;
+    }
+};
