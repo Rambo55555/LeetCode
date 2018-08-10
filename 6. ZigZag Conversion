@@ -1,0 +1,62 @@
+static const auto ____ = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    return nullptr;
+}();
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(s == "")//为空返回空
+            return "";
+        if(numRows == 1)//一行，就返回一行
+            return s;
+        string ans = "";//输出答案
+        bool goingdown = false;//方向
+        string rows[numRows];//存每行的字符串
+        for(int i = 0; i < numRows; ++i)//初始化每一行
+            rows[i] = "";
+        int curRow = 0;//当前行
+        for(int i = 0; i < s.length(); ++i)//一个一个字符来
+        {
+            rows[curRow]+=s[i];//当前行的字符
+            if(curRow == 0 || curRow == numRows - 1) goingdown = !goingdown;//为0或者到底就要换方向
+            curRow += goingdown?1:-1;//看方向是什么，往下就+1
+        }
+        for(int i = 0; i < numRows; ++i)//把字符串合并
+            ans += rows[i];
+        return ans;
+    }
+};
+
+/*
+static const auto ____ = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    return nullptr;
+}();
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(s == "")//为空返回空
+            return "";
+        string ans = "";//返回答案
+        int x = 2 * numRows - 2;//间隔
+        int len = s.length();//字符串长度
+        if(numRows == 1)//行数为1直接返回
+            return s;
+            
+        for(int i = 0; i < numRows; ++i)//第i行
+        {
+            for(int j = 0; j + i < len; j+=x)//从第i+j开始，每次j+x
+            {
+                ans += s[j+i];//把字符附到答案后
+                if(i != 0 && i != numRows - 1 && j + x - i < len)//当不是首末两行时还要加上j+x-i 可以理解为只有一个字符的列的排列规律，即第j+x列减去i就是那列的字符位置
+                    ans += s[j + x - i];
+            }
+        }
+        return ans;
+    }
+};
+
+
+*/
