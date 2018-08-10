@@ -1,0 +1,29 @@
+static int x = []() {
+     std::ios::sync_with_stdio(false);//取消cin与stdin同步
+     cin.tie(NULL);//解除cin与cout的绑定
+     return 0;
+}();//上面这一段代码下面没有用到，看到别人都是用了这个，试了一下，真能提高输入速度。。。
+class Solution {
+public:
+    int reverse(int x) {
+ 
+        long ans = 0;
+        int flag = 1;
+ 
+        if(x < 0)
+        {
+            flag = -1;
+            x = -x;
+        }
+        while(x)
+        {
+            long temp;
+            if((temp = ans * 10 + x % 10)>2147483647 || temp < 0)//判断是否溢出
+                return 0;
+            ans = temp;
+            x /= 10;
+        }
+ 
+        return ans * flag;
+    }
+};
